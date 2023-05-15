@@ -53,6 +53,17 @@ class ItemTest(unittest.TestCase):
             exp_type = 'conjured' if len(item_args) > 3 and 'conjured' in item_args[-1] else 'miscellaneous'
             self.assertEqual(exp_type, item.item_type)
 
+    def test_quality_rate(self):
+        for item_args in self.sample_items_args:
+            item = Item(*item_args)
+
+            self.assertTrue(hasattr(item, 'quality_rate'))
+
+            if 'conjured' in item.item_type:
+                self.assertEqual(Item.default_quality_rate * 2, item.quality_rate)
+            else:
+                self.assertEqual(Item.default_quality_rate, item.quality_rate)
+
 
 if __name__ == '__main__':
     unittest.main()
