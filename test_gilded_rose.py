@@ -16,7 +16,7 @@ class GildedRoseTest(unittest.TestCase):
     def test_conjured_item_quality(self):
         # quality of conjured items shall decrease twice as fast
         initial_quality = 8
-        item = Item("Conjured line of code", 12, initial_quality)
+        item = Item("perfect line of code", 12, initial_quality, "conjured")
 
         gr = GildedRose([item])
         gr.update_quality()
@@ -26,7 +26,7 @@ class GildedRoseTest(unittest.TestCase):
     def test_expired_conjured_item_quality(self):
         # quality of conjured items shall decrease twice as fast
         initial_quality = 34
-        item = Item("Conjured line of code", 0, initial_quality)
+        item = Item("perfect line of code", 0, initial_quality, item_type='conjured')
 
         gr = GildedRose([item])
         gr.update_quality()
@@ -40,7 +40,8 @@ class ItemTest(unittest.TestCase):
         cls.sample_items_args = [
             ('bar', 124, 34),
             ('baz', 3, 2),
-            ('conjured spoon', 7, 42)
+            ('conjured spoon', 7, 42, 'conjured'),
+            ('Fake conjured item', 7, 42, 'conjured')
         ]
 
     def test_item_type(self):
@@ -49,7 +50,7 @@ class ItemTest(unittest.TestCase):
 
             self.assertTrue(hasattr(item, 'item_type'))
 
-            exp_type = 'conjured' if 'conjured' in str(item.name).lower() else "miscellaneous"
+            exp_type = 'conjured' if len(item_args) > 3 and 'conjured' in item_args[-1] else 'miscellaneous'
             self.assertEqual(exp_type, item.item_type)
 
 
