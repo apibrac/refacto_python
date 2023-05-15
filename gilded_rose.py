@@ -12,10 +12,7 @@ class GildedRose(object):
             if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
                 if item.quality > 0:
                     if item.name != "Sulfuras, Hand of Ragnaros":
-                        if item.item_type == 'conjured':
-                            item.quality -= 2
-                        else:
-                            item.quality -= 1
+                        item.decrease_quality()
             else:
                 if item.quality < 50:
                     item.quality = item.quality + 1
@@ -37,10 +34,7 @@ class GildedRose(object):
                     if item.name != "Backstage passes to a TAFKAL80ETC concert":
                         if item.quality > 0:
                             if item.name != "Sulfuras, Hand of Ragnaros":
-                                if item.item_type == 'conjured':
-                                    item.quality -= 2
-                                else:
-                                    item.quality -= 1
+                                item.decrease_quality()
                     else:
                         item.quality = item.quality - item.quality
                 else:
@@ -49,15 +43,24 @@ class GildedRose(object):
 
 
 class Item:
-    def __init__(self, name, sell_in, quality):
+
+    default_quality_rate = -1
+
+    def __init__(self, name, sell_in, quality, item_type='miscellaneous'):
         self.name = name
         self.sell_in = sell_in
         self.quality = quality
+        self.item_type = str(item_type).lower()
 
-        if "conjured" in str(self.name).lower():
-            self.item_type = 'conjured'
-        else:
-            self.item_type = 'miscellaneous'
+        self.set_quality_rate()
+
     def __repr__(self):
         return "Item(name=%s, sell_in=%s, quality=%s, item_type=%s)" % (self.name, self.sell_in, self.quality, self.item_type)
 
+    def set_quality_rate(self):
+        if 'conjured' in self.item_type:
+            self.quality_rate = self.default_quality_rate * 2
+        else:
+            self.quality_rate = self.default_quality_rate
+    def decrease_quality(self):
+        self.quality += self.quality_rate
