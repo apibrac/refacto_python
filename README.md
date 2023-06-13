@@ -35,3 +35,14 @@ still works correctly.
 
 Just for clarification, an item can never have its Quality increase above 50, however "Sulfuras" is a
 legendary item and as such its Quality is 80 and it never alters.
+
+
+# Tests Unitest
+```
+pip install -r requirements-tests.txt
+pytest
+```
+# Test Algo
+```
+python texttest_fixture.py <day>
+```
